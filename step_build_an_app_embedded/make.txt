@@ -1,0 +1,55 @@
+Cài ST-flash trên MSYS2 
+
+	Adminstrator@BUI-VAN-HAI MINGW64 ~
+	$ st-flash --version
+	v1.8.0
+
+	Adminstrator@BUI-VAN-HAI MINGW64 ~
+	$ which st-flash
+	/mingw64/bin/st-flash
+	Hiện như này là được
+
+Overview Embedded Systems Architecture
+
+Embedded System là một hệ thống gồm phần cứng (HW) và phần mềm (SW) phối hợp với nhau 
+để làm một nhiệm vụ cụ thể, ví dụ như điều khiển motor, đọc cảm biến, giao tiếp UART, kết nối internet…
+
+1) HW: SoC, Memories, Peripherals
+
+SoC (System on Chip)
+- Đây là con chip chính, ví dụ STM32, ESP32, AVR…
+- Bên trong SoC có CPU, timer, UART, SPI, I2C, ADC…
+- CPU là nơi chạy chương trình, còn các ngoại vi là công cụ để CPU giao tiếp với thế giới bên ngoài
+
+Memories 
+Gồm Flash, RAM, EEPROM…
+- Flash dùng để chứa chương trình (code).
+- RAM dùng để chạy chương trình, lưu biến, stack, heap.
+- Không có bộ nhớ thì CPU không có chỗ để chạy code.
+
+Peripherals 
+- Là các phần như GPIO, UART, SPI, I2C, ADC, PWM…
+- Ngoại vi cho phép MCU nói chuyện với LED, nút nhấn, cảm biến, màn hình, motor…
+
+2) SW: low layer, middle layer, high layer
+
+Device Drivers: là lớp gần phần cứng nhất, code thanh ghi
+
+Middleware: sử dụng low layer để làm các công việc phức tạp hơn
+
+Ví dụ middleware:
+	File system (FAT16, FAT32, LittleFS)
+	TCP/IP stack
+	USB stack
+	Bluetooth stack
+
+Middleware thường xử lý logic lớn, nhiều bước, nhiều trạng thái. Giúp người viết ứng dụng 
+không phải tự làm lại những thứ phức tạp.
+
+Operating System:
+VD như FreeRTOS:
+	OS quản lý task, thread, scheduling
+	Quản lý thời gian, semaphore, queue
+
+Application:
+	Phần làm ra product sẽ call driver, middleware, OS API --> sẽ quyết định sản phẩm sẽ làm được gì

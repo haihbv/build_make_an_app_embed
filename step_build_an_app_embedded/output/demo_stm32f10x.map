@@ -1,0 +1,222 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08000000         0x00020000         xr
+RAM              0x20000000         0x00005000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD ./output/main.o
+LOAD ./output/stm32f10x_startup.o
+LOAD ./output/sys.o
+START GROUP
+LOAD c:/toolchains/armgcc/bin/../lib/gcc/arm-none-eabi/10.3.1\libgcc.a
+LOAD c:/toolchains/armgcc/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib\libc.a
+END GROUP
+                0x20005000                _estack = (ORIGIN (RAM) + LENGTH (RAM))
+
+.isr_vector     0x08000000       0xec
+ *(.isr_vector)
+ .isr_vector    0x08000000       0xec ./output/stm32f10x_startup.o
+                0x08000000                vectors
+
+.text           0x080000ec      0x194
+ *(.text)
+ .text          0x080000ec       0x64 ./output/main.o
+                0x080000ec                main
+ .text          0x08000150       0x60 ./output/stm32f10x_startup.o
+                0x08000150                RTC_Alarm_IRQHandler
+                0x08000150                EXTI2_IRQHandler
+                0x08000150                DebugMon_Handler
+                0x08000150                TIM1_CC_IRQHandler
+                0x08000150                HardFault_Handler
+                0x08000150                PVD_IRQHandler
+                0x08000150                PendSV_Handler
+                0x08000150                NMI_Handler
+                0x08000150                EXTI3_IRQHandler
+                0x08000150                USB_HP_CAN_TX_IRQHandler
+                0x08000150                EXTI0_IRQHandler
+                0x08000150                I2C2_EV_IRQHandler
+                0x08000150                UsageFault_Handler
+                0x08000150                ADC1_2_IRQHandler
+                0x08000150                SPI1_IRQHandler
+                0x08000150                CAN_SCE_IRQHandler
+                0x08000150                TAMPER_IRQHandler
+                0x08000150                DMA1_Channel4_IRQHandler
+                0x08000150                USART3_IRQHandler
+                0x08000150                RTC_IRQHandler
+                0x08000150                DMA1_Channel7_IRQHandler
+                0x08000150                I2C1_ER_IRQHandler
+                0x08000150                TIM4_IRQHandler
+                0x08000150                CAN_RX1_IRQHandler
+                0x08000150                I2C1_EV_IRQHandler
+                0x08000150                DMA1_Channel6_IRQHandler
+                0x08000150                TIM3_IRQHandler
+                0x08000150                RCC_IRQHandler
+                0x08000150                TIM1_TRG_COM_IRQHandler
+                0x08000150                DMA1_Channel1_IRQHandler
+                0x08000150                Default_Handler
+                0x08000150                EXTI15_10_IRQHandler
+                0x08000150                EXTI9_5_IRQHandler
+                0x08000150                SPI2_IRQHandler
+                0x08000150                USB_LP_CAN_RX0_IRQHandler
+                0x08000150                MemManage_Handler
+                0x08000150                SVC_Handler
+                0x08000150                DMA1_Channel5_IRQHandler
+                0x08000150                EXTI4_IRQHandler
+                0x08000150                DMA1_Channel3_IRQHandler
+                0x08000150                TIM1_UP_IRQHandler
+                0x08000150                WWDG_IRQHandler
+                0x08000150                TIM2_IRQHandler
+                0x08000150                TIM1_BRK_IRQHandler
+                0x08000150                EXTI1_IRQHandler
+                0x08000150                USART2_IRQHandler
+                0x08000150                I2C2_ER_IRQHandler
+                0x08000150                DMA1_Channel2_IRQHandler
+                0x08000150                FLASH_IRQHandler
+                0x08000150                BusFault_Handler
+                0x08000150                USART1_IRQHandler
+                0x08000150                USBWakeUp_IRQHandler
+                0x08000156                Reset_Handler
+ .text          0x080001b0       0xd0 ./output/sys.o
+                0x080001b0                systick_init
+                0x080001e8                millis
+                0x080001fc                delay_ms
+                0x08000226                delay_us
+                0x08000266                SysTick_Handler
+ *(.text*)
+ *(.glue_7)
+ .glue_7        0x08000280        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x08000280        0x0 linker stubs
+ *(.eh_frame)
+                0x08000280                . = ALIGN (0x4)
+
+.vfp11_veneer   0x08000280        0x0
+ .vfp11_veneer  0x08000280        0x0 linker stubs
+
+.v4_bx          0x08000280        0x0
+ .v4_bx         0x08000280        0x0 linker stubs
+
+.iplt           0x08000280        0x0
+ .iplt          0x08000280        0x0 ./output/main.o
+
+.rel.dyn        0x08000280        0x0
+ .rel.iplt      0x08000280        0x0 ./output/main.o
+
+.rodata         0x08000280        0x0
+ *(.rodata)
+ *(.rodata*)
+                0x08000280                . = ALIGN (0x4)
+                0x08000280                . = ALIGN (0x4)
+                0x08000280                _etext = .
+
+.preinit_array  0x08000280        0x0
+                [!provide]                PROVIDE (__preinit_array_start = .)
+ *(.preinit_array*)
+                [!provide]                PROVIDE (__preinit_array_end = .)
+
+.init_array     0x08000280        0x0
+                [!provide]                PROVIDE (__init_array_start = .)
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array*)
+                [!provide]                PROVIDE (__init_array_end = .)
+
+.fini_array     0x08000280        0x0
+                [!provide]                PROVIDE (__fini_array_start = .)
+ *(SORT_BY_NAME(.fini_array.*))
+ *(.fini_array*)
+                [!provide]                PROVIDE (__fini_array_end = .)
+
+.data           0x20000000        0x0 load address 0x08000280
+                0x20000000                _sdata = .
+ *(.data)
+ .data          0x20000000        0x0 ./output/main.o
+ .data          0x20000000        0x0 ./output/stm32f10x_startup.o
+ .data          0x20000000        0x0 ./output/sys.o
+ *(.data*)
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                _edata = .
+                0x08000280                _sidata = LOADADDR (.data)
+
+.igot.plt       0x20000000        0x0 load address 0x08000280
+ .igot.plt      0x20000000        0x0 ./output/main.o
+
+.bss            0x20000000        0x4 load address 0x08000280
+                0x20000000                _sbss = .
+ *(.bss)
+ .bss           0x20000000        0x0 ./output/main.o
+ .bss           0x20000000        0x0 ./output/stm32f10x_startup.o
+ .bss           0x20000000        0x4 ./output/sys.o
+                0x20000000                tick
+ *(.bss*)
+ *(COMMON)
+                0x20000004                . = ALIGN (0x4)
+                0x20000004                _ebss = .
+
+._user_heap_stack
+                0x20000004      0x804 load address 0x08000284
+                0x20000008                . = ALIGN (0x8)
+ *fill*         0x20000004        0x4 
+                [!provide]                PROVIDE (_sheap = .)
+                0x20000408                . = (. + 0x400)
+ *fill*         0x20000008      0x400 
+                [!provide]                PROVIDE (_eheap = .)
+                0x20000808                . = (. + 0x400)
+ *fill*         0x20000408      0x400 
+                [!provide]                PROVIDE (_estack_custom = .)
+OUTPUT(./output/demo_stm32f10x.elf elf32-littlearm)
+LOAD linker stubs
+
+.debug_info     0x00000000      0x39f
+ .debug_info    0x00000000       0xa8 ./output/main.o
+ .debug_info    0x000000a8      0x139 ./output/stm32f10x_startup.o
+ .debug_info    0x000001e1      0x1be ./output/sys.o
+
+.debug_abbrev   0x00000000      0x258
+ .debug_abbrev  0x00000000       0x53 ./output/main.o
+ .debug_abbrev  0x00000053       0xc8 ./output/stm32f10x_startup.o
+ .debug_abbrev  0x0000011b      0x13d ./output/sys.o
+
+.debug_aranges  0x00000000       0x60
+ .debug_aranges
+                0x00000000       0x20 ./output/main.o
+ .debug_aranges
+                0x00000020       0x20 ./output/stm32f10x_startup.o
+ .debug_aranges
+                0x00000040       0x20 ./output/sys.o
+
+.debug_line     0x00000000      0x336
+ .debug_line    0x00000000       0xf1 ./output/main.o
+ .debug_line    0x000000f1      0x107 ./output/stm32f10x_startup.o
+ .debug_line    0x000001f8      0x13e ./output/sys.o
+
+.debug_str      0x00000000      0x214
+ .debug_str     0x00000000      0x12b ./output/main.o
+                                0x16d (size before relaxing)
+ .debug_str     0x0000012b       0x6e ./output/stm32f10x_startup.o
+                                0x1b5 (size before relaxing)
+ .debug_str     0x00000199       0x7b ./output/sys.o
+                                0x1ca (size before relaxing)
+
+.comment        0x00000000       0x49
+ .comment       0x00000000       0x49 ./output/main.o
+                                 0x4a (size before relaxing)
+ .comment       0x00000049       0x4a ./output/stm32f10x_startup.o
+ .comment       0x00000049       0x4a ./output/sys.o
+
+.ARM.attributes
+                0x00000000       0x2d
+ .ARM.attributes
+                0x00000000       0x2d ./output/main.o
+ .ARM.attributes
+                0x0000002d       0x2d ./output/stm32f10x_startup.o
+ .ARM.attributes
+                0x0000005a       0x2d ./output/sys.o
+
+.debug_frame    0x00000000      0x130
+ .debug_frame   0x00000000       0x2c ./output/main.o
+ .debug_frame   0x0000002c       0x48 ./output/stm32f10x_startup.o
+ .debug_frame   0x00000074       0xbc ./output/sys.o
