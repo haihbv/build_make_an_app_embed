@@ -1,5 +1,8 @@
 Cài ST-flash trên MSYS2 
 
+1. Mở MSYS2 UCRT64 chạy lệnh này để cài stlink-toolset
+	pacman -S mingw-w64-x86_64-stlink
+2. Kiểm tra trong MSYS2 MINGW64
 	Adminstrator@BUI-VAN-HAI MINGW64 ~
 	$ st-flash --version
 	v1.8.0
@@ -8,6 +11,29 @@ Cài ST-flash trên MSYS2
 	$ which st-flash
 	/mingw64/bin/st-flash
 	Hiện như này là được
+3. Instructions in MINGW64
+	See info chip: st-info --probe
+	Reset chip: st-flash reset
+	Erase chip: st-flash erase
+	Load chip: st-flash write file.bin 0x8000000
+	Debug server GDB: st-util
+
+4. Cách debug bằng terminal
+B1: vào MINGW64 gõ st-util lúc này sẽ hiện ra "Listening at *:4242..."
+B2: vào folder constant file.elf rồi chạy cmd ở đây
+B3: gõ lệnh arm-none-eabi-gdb demo.elf, rồi nhập 4 lệnh tiếp theo
+	target extended-remote :4242
+	monitor reset halt
+	load
+	break main
+	continue
+B4: 
+	run step by step: step or next
+	see variables: print "variables"
+	see register: info register & see stack: bt
+	reset chip: monitor reset halt
+
+Note: can add rule debug in Make program
 
 Overview Embedded Systems Architecture
 
