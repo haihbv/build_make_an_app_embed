@@ -1,4 +1,4 @@
-# Hướng dẫn lập trình GNU Make từ cơ bản đến nâng cao
+# GNU Make Manual
 
 Tài liệu tham khảo: GNU Make Manual - <https://www.gnu.org/software/make/manual/>
 
@@ -6,7 +6,7 @@ Tài liệu tham khảo: GNU Make Manual - <https://www.gnu.org/software/make/ma
 
 ## Mục lục
 
-### Phần 1: Cơ bản (cho người mới học)
+### Chapter 1: Basic
 
 1. [Makefile là gì?](#1-makefile-là-gì)
 2. [Cài đặt và kiểm tra](#2-cài-đặt)
@@ -15,7 +15,7 @@ Tài liệu tham khảo: GNU Make Manual - <https://www.gnu.org/software/make/ma
 5. [Sử dụng biến](#5-biến-trong-makefile)
 6. [Bài tập cơ bản](#6-bài-tập-cơ-bản)
 
-### Phần 2: Trung cấp
+### Chapter 2: Middle
 
 1. [Biến tự động](#7-biến-tự-động)
 2. [Pattern Rules](#8-pattern-rules)
@@ -23,7 +23,7 @@ Tài liệu tham khảo: GNU Make Manual - <https://www.gnu.org/software/make/ma
 4. [Phony Targets](#10-phony-targets)
 5. [Bài tập trung cấp](#11-bài-tập-trung-cấp)
 
-### Phần 3: Nâng cao
+### Chapter 3: Advanced
 
 1. [Điều kiện](#12-conditionals)
 2. [Include và nhiều Makefile](#13-include)
@@ -31,7 +31,7 @@ Tài liệu tham khảo: GNU Make Manual - <https://www.gnu.org/software/make/ma
 4. [Recursive Make](#15-recursive-make)
 5. [Dự án thực tế](#16-dự-án-thực-tế)
 
-### Phần 4: Tham khảo
+### Chapter 4: References
 
 1. [Kinh nghiệm hay](#17-best-practices)
 2. [Xử lý lỗi thường gặp](#18-troubleshooting)
@@ -39,11 +39,11 @@ Tài liệu tham khảo: GNU Make Manual - <https://www.gnu.org/software/make/ma
 
 ---
 
-# PHẦN 1: CƠ BẢN
+# Chapter 1: Basic
 
 ## 1. Makefile là gì?
 
-### Mục tiêu
+### Objective
 
 Sau phần này bạn sẽ:
 
@@ -51,7 +51,7 @@ Sau phần này bạn sẽ:
 - Biết khi nào nên dùng
 - Hiểu cách Make hoạt động
 
-### Giới thiệu
+### Introduction
 
 GNU Make là công cụ tự động hóa việc biên dịch chương trình. Thay vì gõ tay từng lệnh gcc, bạn chỉ cần gõ `make` và mọi thứ tự động chạy.
 
@@ -187,7 +187,7 @@ Hello, Make!
 
 Xong! Đó là Makefile đơn giản nhất.
 
-### Ví dụ thực tế hơn
+### Example
 
 Tạo file main.c:
 
@@ -376,7 +376,7 @@ CFLAGS += -O2
 # CFLAGS = -Wall -O2
 ```
 
-### Ví dụ hoàn chỉnh với biến
+### Example
 
 ```makefile
 CC = gcc
@@ -485,7 +485,7 @@ clean:
 
 ---
 
-# PHẦN 2: TRUNG CẤP
+# Chapter 2: Middle
 
 ## 7. Biến tự động
 
@@ -502,7 +502,7 @@ $?  # Prerequisites mới hơn target
 $*  # Phần tên không có extension
 ```
 
-### Ví dụ cụ thể
+### Example
 
 ```makefile
 program: main.o utils.o
@@ -556,7 +556,7 @@ Ngắn gọn hơn nhiều!
 
 Pattern rule là rule áp dụng cho nhiều file cùng mẫu.
 
-### Cú pháp
+### Syntax
 
 ```makefile
 %.o: %.c
@@ -567,7 +567,7 @@ Dấu `%` là wildcard (ký tự đại diện).
 
 Rule này nói: "Mọi file .o được tạo từ file .c cùng tên"
 
-### Ví dụ hoạt động
+### Example
 
 Khi Make cần tạo `main.o`:
 
@@ -642,7 +642,7 @@ Hoặc viết ngắn:
 OBJECTS = $(SOURCES:.c=.o)
 ```
 
-### Ví dụ kết hợp
+### Example
 
 ```makefile
 SOURCES = $(wildcard *.c)
@@ -694,7 +694,7 @@ WITH_PATH = $(addprefix build/,$(FILES))
 # WITH_PATH = build/main.o build/utils.o
 ```
 
-### Ví dụ thực tế với functions
+### Example
 
 ```makefile
 # Tìm tất cả file .c trong src/
@@ -778,7 +778,7 @@ run: program
  ./program
 ```
 
-### Ví dụ đầy đủ
+### Example
 
 ```makefile
 CC = gcc
@@ -889,11 +889,11 @@ clean:
 
 ---
 
-# PHẦN 3: NÂNG CAO
+# Chapter 3: Advanced
 
 ## 12. Conditionals
 
-### Cú pháp
+### Syntax
 
 ```makefile
 ifeq ($(VAR),value)
@@ -903,7 +903,7 @@ else
 endif
 ```
 
-### Ví dụ: Debug vs Release
+### Example: Debug vs Release
 
 ```makefile
 MODE = debug
@@ -933,7 +933,7 @@ ifndef CC
 endif
 ```
 
-### Ví dụ thực tế
+### Example
 
 ```makefile
 # Chọn compiler
@@ -973,7 +973,7 @@ include config.mk
 
 Chia Makefile thành nhiều file nhỏ dễ quản lý hơn.
 
-### Ví dụ
+### Example
 
 **config.mk:**
 
@@ -1062,7 +1062,7 @@ Giờ nếu utils.h hoặc math.h thay đổi, Make sẽ build lại main.o.
 
 Dự án lớn với nhiều thư mục con, mỗi thư mục có Makefile riêng.
 
-### Ví dụ cấu trúc
+### Example
 
 ```
 project/
@@ -1403,7 +1403,7 @@ make -p
 
 ## 19. Cheat Sheet
 
-### Cú pháp cơ bản
+### Syntax
 
 ```makefile
 # Biến
