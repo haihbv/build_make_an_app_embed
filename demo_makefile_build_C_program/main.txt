@@ -1,0 +1,63 @@
+# Biên dịch C program
+
+## Preprocessing:
+Handle:
+	Xử lý #include (chèn nội dung file header vào)
+	Thay thế các #define, macro
+	Bỏ comment
+	Xử lý các chỉ thị #ifdef, #ifndef
+
+Intructions:
+	gcc -E main.c -o main.i
+
+## Compiler:
+
+Handle:
+	Kiểm tra syntax C 
+	Chuyển file.c thành file asm
+
+## Assembler:
+
+Handle:
+	Chuyển assembly thành mãy máy (machine code)
+	Tạo object file constants: mã lệnh, bảng symbol, relocation info 
+Intructions:
+	gcc -S main.i -o main.s
+
+## Linking:
+
+Handle:
+	Linker các file object lại với nhau
+	Liên với các lib chuẩn (libc, libm, ...)
+	Giải quyết các symbol
+
+Intructions:
+	gcc main.o -o main.exe
+
+# Option GCC cần biết:
+
+	Thêm các cờ thường dùng:
+	-Wall : bật cảnh báo
+	-Wextra : cảnh báo mở rộng
+	-g : sinh debug symbol
+	-O0/O1/O2/O3 : tối ưu
+	-I : thêm đường dẫn header
+	-L : thêm đường dẫn thư viện
+	-l : link với thư viện
+
+# Diagram:
+
+main.c
+  │  Preprocess (-E)
+  ▼
+main.i
+  │  Compile (-S)
+  ▼
+main.s
+  │  Assemble (-c)
+  ▼
+main.o
+  │  Link
+  ▼
+main.exe
+
